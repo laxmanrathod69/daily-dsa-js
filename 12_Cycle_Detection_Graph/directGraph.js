@@ -45,22 +45,29 @@ class Graph {
   }
 
   // Directed: DFS Cycle detection
-  DFSCycleDetection(start) {
-    if (!start) {
-      return undefined;
-    }
-    const stack = [start];
+  DFSHasCycle() {
     const visited = new Set();
-    const parent = {};
-    visited.add(start);
-    while (stack.length) {
-      let current = stack.pop();
-      for (let neighbor of this.adjacencyList[current]) {
-        if (!visited.has(neighbor)) {
-          visited.add(neighbor);
-          stack.push(neighbor);
-          parent[neighbor] = current;
-        } else if (neighbor !== parent[current]) {
+    const recStack = new Set();
+    const dfs = (vrtx) => {
+      visited.add(vrtx);
+      recStack.add(vrtx);
+      for (const neighbour of this.adjacencyList[vrtx]) {
+        if (!visited.has(neighbour)) {
+          if (dfs(neighbour)) {
+            return true;
+          }
+        } else if (recStack.has(neighbour)) {
+          return true;
+        }
+      }
+      recStack.delete(vrtx);
+      return false;
+    };
+
+    // Check from each vertex (for disconnected components)
+    for (const vertext in this.adjacencyList) {
+      if (!visited.has(vertext)) {
+        if (dfs(vertext)) {
           return true;
         }
       }
@@ -70,17 +77,11 @@ class Graph {
 }
 
 const graph = new Graph();
-graph.addVertex(1);
-graph.addVertex(2);
-graph.addVertex(3);
-graph.addVertex(4);
-graph.addVertex(6);
+[1, 2, 3, 4].forEach((vrtx) => graph.addVertex(vrtx));
 graph.addEdge(1, 2);
-graph.addEdge(1, 3);
-graph.addEdge(2, 6);
-graph.addEdge(6, 2);
+graph.addEdge(2, 3);
 graph.addEdge(3, 4);
-graph.addEdge(4, 6);
+graph.addEdge(4, 1);
 console.log(graph);
-console.log(graph.BFSCycleDetection(1));
-console.log(graph.DFSCycleDetection(1));
+// console.log(graph.BFSCycleDetection(1));
+console.log(graph.DFSHasCycle());
