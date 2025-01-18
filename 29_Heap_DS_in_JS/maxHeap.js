@@ -1,4 +1,4 @@
-class MinHeap {
+class MaxHeap {
   constructor() {
     this._heap = [];
   }
@@ -71,13 +71,13 @@ class MinHeap {
   }
 }
 
-const minHeap = new MinHeap();
+const maxHeap = new MaxHeap();
 
-minHeap.insert(10);
-minHeap.insert(5);
-minHeap.insert(20);
-minHeap.insert(3);
+maxHeap.insert(10);
+maxHeap.insert(5);
+maxHeap.insert(20);
+maxHeap.insert(3);
 
-console.log(minHeap.peek()); // Output: 20
-console.log(minHeap.remove()); // Output: 20
-console.log(minHeap.peek()); // Output: 10
+console.log(maxHeap.peek()); // Output: 20
+console.log(maxHeap.remove()); // Output: 20
+console.log(maxHeap.peek()); // Output: 10
